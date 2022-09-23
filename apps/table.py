@@ -62,60 +62,62 @@ layout = html.Div([
                     dcc.Download(id='download_1')
                 ], width={'size': 1, 'offset': 0, 'order': 1}, style={'text-align': 'right'})
             ], className='p-2 align-items-stretch'),
-    dbc.Row([
-        dbc.Col([
-            html.H6('Category', style={'text-align': 'left'})
-        ], width={'size': 1, "offset": 0, 'order': 1}, style={'padding-top': 10}),
-        dbc.Col([
-            dcc.Dropdown(id='category_2',
-                         placeholder="Please select category",
-                         options=[{'label':x,'value':x} for x in df_table.sort_values('category_name')['category_name'].unique()],
-                         value=[],
-                         multi=True,
-                         disabled=False,
-                         clearable=True,
-                         searchable=True)
-        ], width={'size': 5, "offset": 0, 'order': 1}),
-        dbc.Col([
-            html.H6('Items', style={'text-align': 'left'})
-        ], width={'size': 1, "offset": 0, 'order': 1}, style={'padding-top': 10}),
-        dbc.Col([
-            dcc.Dropdown(id='items_2',
-                         placeholder="Please select items",
-                         options=[{'label':x,'value':x} for x in df_table.sort_values('item_description')['item_description'].unique()],
-                         value=[],
-                         multi=True,
-                         disabled=False,
-                         clearable=True,
-                         searchable=True)
-        ], width={'size': 5, "offset": 0, 'order': 1})
-    ]),
-    html.Hr(),
-    dbc.Row([
-        dbc.Col([
-    html.H5('Data Table',className='text-center', style={'padding-top': 20}),
-            dash_table.DataTable(id='table',
-            columns=[{"name":i,"id":i} for i in df_table.columns],
-            data=[],
-            style_table={'overflow':'scroll','height':550},
-            style_header={'backgroundColor':'orange','padding':'10px','color':'#000000'},
-            style_cell={'textAlign':'center','font_size': '12px',
-                       'whiteSpace':'normal','height':'auto'},
-            editable=True,              # allow editing of data inside all cells
-            filter_action="native",     # allow filtering of data by user ('native') or not ('none')
-            sort_action="native",       # enables data to be sorted per-column by user or not ('none')
-            sort_mode="single",         # sort across 'multi' or 'single' columns
-            column_selectable="multi",  # allow users to select 'multi' or 'single' columns
-            row_selectable="multi",     # allow users to select 'multi' or 'single' rows
-            row_deletable=True,         # choose if user can delete a row (True) or not (False)
-            selected_columns=[],        # ids of columns that user selects
-            selected_rows=[],           # indices of rows that user selects
-            page_action="native")
+            dbc.Row([
+                dbc.Col([
+                    html.H6('Category', style={'text-align': 'left'})
+                ], width={'size': 1, "offset": 0, 'order': 1}, style={'padding-top': 10}),
+                dbc.Col([
+                    dcc.Dropdown(id='category_2',
+                                placeholder="Please select category",
+                                options=[{'label':x,'value':x} for x in df_table.sort_values('category_name')['category_name'].unique()],
+                                value=[],
+                                multi=True,
+                                disabled=False,
+                                clearable=True,
+                                searchable=True)
+                ], width={'size': 5, "offset": 0, 'order': 1}),
+                dbc.Col([
+                    html.H6('Items', style={'text-align': 'left'})
+                ], width={'size': 1, "offset": 0, 'order': 1}, style={'padding-top': 10}),
+                dbc.Col([
+                    dcc.Dropdown(id='items_2',
+                                placeholder="Please select items",
+                                options=[{'label':x,'value':x} for x in df_table.sort_values('item_description')['item_description'].unique()],
+                                value=[],
+                                multi=True,
+                                disabled=False,
+                                clearable=True,
+                                searchable=True)
+                ], width={'size': 5, "offset": 0, 'order': 1})
+            ]),
+            html.Hr(),
+            dbc.Row([
+                dbc.Col([
+                    html.H5('Data Table',className='text-center', style={'padding-top': 20}),
+                    dash_table.DataTable(id='table',
+                    columns=[{"name":i,"id":i} for i in df_table.columns],
+                    data=[],
+                    style_table={'overflow':'scroll','height':550},
+                    style_header={'backgroundColor':'orange','padding':'10px','color':'#000000'},
+                    style_cell={'textAlign':'center','font_size': '12px',
+                                'whiteSpace':'normal','height':'auto'},
+                    editable=True,              # allow editing of data inside all cells
+                    filter_action="native",     # allow filtering of data by user ('native') or not ('none')
+                    sort_action="native",       # enables data to be sorted per-column by user or not ('none')
+                    sort_mode="single",         # sort across 'multi' or 'single' columns
+                    column_selectable="multi",  # allow users to select 'multi' or 'single' columns
+                    row_selectable="multi",     # allow users to select 'multi' or 'single' rows
+                    row_deletable=True,         # choose if user can delete a row (True) or not (False)
+                    selected_columns=[],        # ids of columns that user selects
+                    selected_rows=[],           # indices of rows that user selects
+                    page_action="native")
+                ])
+            ]),
+            dcc.Store(id='store_date',data=[],storage_type='memory')
         ])
-    ])
-])
 
-@app.callback(Output('table','data'),
+@app.callback([Output('table','data'),
+               Output('store_date','data')],
               [Input('btn_6','n_clicks')],
               [State('my-date-picker-range_6','start_date'),
                State('my-date-picker-range_6','end_date'),
@@ -131,12 +133,14 @@ def update_table(n_clicks,start_date_6,end_date_6,store,category,items):
         df_table_2 = df_table_2[df_table_2['category_name'].isin(category)]
     if items != []:
         df_table_2 = df_table_2[df_table_2['item_description'].isin(items)]
-    return df_table_2.to_dict(orient='records')
+    return df_table_2.to_dict(orient='records'),df_table_2.to_dict(orient='records')
+
 
 @app.callback(Output('download_1','data'),
               [Input('btn_7','n_clicks')],
+              [State('store_date','data')],
               prevent_initial_call=True)
-
-def generate_excel(n_clicks):
+def generate_excel(n_clicks,n):
+    df_table_3 = df_table_2.copy()
     if n_clicks > 0:
-        return dcc.send_data_frame (df_table_2.to_excel,filename='Data_table'+"_" + ".xlsx",index=False)
+        return dcc.send_data_frame(df_table_3.to_excel,filename='Data_table' + ".xlsx",index=False)
