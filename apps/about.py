@@ -28,7 +28,8 @@ layout = html.Div([
             dcc.Markdown('''- [Page 2](https://multiple-page-app.herokuapp.com/page-2) is about charts based on wine item.'''),
             dcc.Markdown('''- [Page 3](https://multiple-page-app.herokuapp.com/page-3) is about charts based on store.'''),
             dcc.Markdown('''- [Page 4](https://multiple-page-app.herokuapp.com/page-4) helps you to find store based on latitude and longitude.'''),
-            dcc.Markdown('''- [Page 5](https://multiple-page-app.herokuapp.com/page-5) is about us''')
+            dcc.Markdown('''- [Page 5](https://multiple-page-app.herokuapp.com/page-5) helps you to filter and download data table'''),
+            dcc.Markdown('''- [Page 6](https://multiple-page-app.herokuapp.com/page-5) is about us''')
         ])
     ]),
     html.Hr(),

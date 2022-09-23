@@ -2,7 +2,7 @@ from dash import dcc
 from dash import html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-from apps import general, maps, items, store, about
+from apps import general, maps, items, store, about, table
 from app import app, server
 
 app.layout = html.Div(children=html.Div(
@@ -20,7 +20,8 @@ app.layout = html.Div(children=html.Div(
                     dbc.DropdownMenuItem("Analysis by Items", href='/page-2'),
                     dbc.DropdownMenuItem("Analysis by Stores", href='/page-3'),
                     dbc.DropdownMenuItem("Find Store", href='/page-4'),
-                    dbc.DropdownMenuItem("About", href='/page-5')
+                    dbc.DropdownMenuItem("Table", href='/page-5'),
+                    dbc.DropdownMenuItem("About", href='/page-6')
                 ],
         )
             ],
@@ -33,14 +34,14 @@ app.layout = html.Div(children=html.Div(
 )
 
 app.callback(
-    [Output(f"page-{i}-link", "active") for i in range(1, 5)],
+    [Output(f"page-{i}-link", "active") for i in range(1, 6)],
     [Input("url", "pathname")],
 )
 def toggle_active_links(pathname):
     if pathname == "/":
         # Treat page 1 as the homepage / index
         return True, False, False
-    return [pathname == f"/page-{i}" for i in range(1, 5)]
+    return [pathname == f"/page-{i}" for i in range(1, 6)]
 
 @app.callback(Output("page-content", "children"),
               [Input("url", "pathname")])
@@ -54,6 +55,8 @@ def render_page_content(pathname):
     elif pathname == "/page-4":
         return maps.layout
     elif pathname == "/page-5":
+        return table.layout
+    elif pathname == "/page-6":
         return about.layout
 if __name__ == '__main__':
     app.run_server(debug=False)

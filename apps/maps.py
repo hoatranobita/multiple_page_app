@@ -25,7 +25,7 @@ layout = html.Div([
                 dbc.Col([
                     dcc.Markdown('''This is a tool that helps you search for stores by latitude and longitude extracted from the original data. 
                     However, the latitude and longitude data of many stores is missing or inaccurate, so we decided to remove stores that missing lattitude and longtitude.
-                    This tool is executed after the [dash-leaflet](http://dash-leaflet.herokuapp.com/)''')
+                    This tool is executed referring the [dash-leaflet](http://dash-leaflet.herokuapp.com/)''')
                 ])
             ]),
             html.Hr(),
