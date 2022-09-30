@@ -273,11 +273,12 @@ def update_graph(n_clicks_1,start_date_3,end_date_3):
     top10_items_1_1 = df4_1['item_description'].iloc[9]
     top10_items_1_2 = df4_1['sale_dollars'].iloc[9]
     top10_items_1_2= f'{top10_items_1_2:,.2f}'
-
+    top10_items_1_3 = df4_1['sale_dollars'].iloc[9]
     fig_2_1 = px.bar(df4_1, x='sale_dollars', y='item_description', orientation='h', text='sale_dollars')
     fig_2_1.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_2_1.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_2_1.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_2_1.update_layout({'xaxis': {'range': [0, top10_items_1_3 * 1.4]}})
 
     df5_1 = dff_1.pivot_table(values='bottles_sold',
                               index=['item_description'],
@@ -288,10 +289,13 @@ def update_graph(n_clicks_1,start_date_3,end_date_3):
     top10_items_2_1 = df5_1['item_description'].iloc[9]
     top10_items_2_2 = df5_1['bottles_sold'].iloc[9]
     top10_items_2_2 = f'{top10_items_2_2:,.2f}'
+    top10_items_2_3 = df5_1['bottles_sold'].iloc[9]
+
     fig_3_1 = px.bar(df5_1, x='bottles_sold', y='item_description', orientation='h', text='bottles_sold')
     fig_3_1.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_3_1.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_3_1.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_3_1.update_layout({'xaxis': {'range': [0, top10_items_2_3 * 1.4]}})
 
     df6_1 = dff_1.pivot_table(values='volume_sold_liters',
                          index=['item_description'],
@@ -302,11 +306,13 @@ def update_graph(n_clicks_1,start_date_3,end_date_3):
     top10_items_3_1 = df6_1['item_description'].iloc[9]
     top10_items_3_2 = df6_1['volume_sold_liters'].iloc[9]
     top10_items_3_2 = f'{top10_items_3_2:,.2f}'
+    top10_items_3_3 = df6_1['volume_sold_liters'].iloc[9]
 
     fig_4_1 = px.bar(df6_1, x='volume_sold_liters', y='item_description', orientation='h', text='volume_sold_liters')
     fig_4_1.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_4_1.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_4_1.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_4_1.update_layout({'xaxis': {'range': [0, top10_items_3_3 * 1.4]}})
 
     df7_1 = dff_1.pivot_table(values='revenues',
                          index=['item_description'],
@@ -317,10 +323,13 @@ def update_graph(n_clicks_1,start_date_3,end_date_3):
     top10_items_4_1 = df7_1['item_description'].iloc[9]
     top10_items_4_2 = df7_1['revenues'].iloc[9]
     top10_items_4_2 = f'{top10_items_4_2:,.2f}'
+    top10_items_4_3 = df7_1['revenues'].iloc[9]
+
     fig_5_1 = px.bar(df7_1, x='revenues', y='item_description', orientation='h', text='revenues')
     fig_5_1.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_5_1.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_5_1.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_5_1.update_layout({'xaxis': {'range': [0, top10_items_4_3 * 1.4]}})
     return fig_2_1,\
            fig_3_1,\
            fig_4_1,\

@@ -95,22 +95,24 @@ layout = html.Div([
                 dbc.Col([
                     html.H5('Data Table',className='text-center', style={'padding-top': 20}),
                     dash_table.DataTable(id='table',
-                    columns=[{"name":i,"id":i} for i in df_table.columns],
-                    data=[],
-                    style_table={'overflow':'scroll','height':550},
-                    style_header={'backgroundColor':'orange','padding':'10px','color':'#000000'},
-                    style_cell={'textAlign':'center','font_size': '12px',
-                                'whiteSpace':'normal','height':'auto'},
-                    editable=True,              # allow editing of data inside all cells
-                    filter_action="native",     # allow filtering of data by user ('native') or not ('none')
-                    sort_action="native",       # enables data to be sorted per-column by user or not ('none')
-                    sort_mode="single",         # sort across 'multi' or 'single' columns
-                    column_selectable="multi",  # allow users to select 'multi' or 'single' columns
-                    row_selectable="multi",     # allow users to select 'multi' or 'single' rows
-                    row_deletable=True,         # choose if user can delete a row (True) or not (False)
-                    selected_columns=[],        # ids of columns that user selects
-                    selected_rows=[],           # indices of rows that user selects
-                    page_action="native")
+                                         columns=[{"name":i,"id":i} for i in df_table.columns],
+                                         data=[],
+                                         style_table={'overflow':'scroll','height':550},
+                                         style_header={'backgroundColor':'orange','padding':'10px','color':'#000000'},
+                                         style_cell={'textAlign':'center','font_size': '12px',
+                                                     'whiteSpace':'normal','height':'auto'},
+                                         editable=True,              # allow editing of data inside all cells
+                                         filter_action="native",     # allow filtering of data by user ('native') or not ('none)
+                                         sort_action="native",       # enables data to be sorted per-column by user or not ('none')
+                                         sort_mode="single",         # sort across 'multi' or 'single' columns
+                                         column_selectable="multi",  # allow users to select 'multi' or 'single' columns
+                                         row_selectable="multi",     # allow users to select 'multi' or 'single' rows
+                                         row_deletable=True,         # choose if user can delete a row (True) or not (False)
+                                         selected_columns=[],        # ids of columns that user selects
+                                         selected_rows=[],           # indices of rows that user selects
+                                         page_action="native",
+                                         export_format='xlsx',
+                                         export_headers='display')
                 ])
             ]),
             dcc.Store(id='store_date',data=[],storage_type='memory')
@@ -135,7 +137,7 @@ def update_table(n_clicks,start_date_6,end_date_6,store,category,items):
         df_table_2 = df_table_2[df_table_2['item_description'].isin(items)]
     return df_table_2.to_dict(orient='records'),df_table_2.to_dict(orient='records')
 
-
+# Download not work on Heroku
 @app.callback(Output('download_1','data'),
               [Input('btn_7','n_clicks')],
               [State('store_date','data')],

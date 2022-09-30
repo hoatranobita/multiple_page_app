@@ -1,5 +1,5 @@
 from dash import dcc
-from dash import html
+from dash import html,callback
 import numpy as np
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
@@ -9,7 +9,6 @@ import json
 import pandas as pd
 from datetime import datetime as dt
 from dash.dependencies import Input, Output, State
-from app import app
 from data_process import df, df2
 # Load json to create choropleth maps
 with urlopen('https://gist.githubusercontent.com/mcwhittemore/96aaa132af24d3114643/raw/9cea5ced7476cc419621acf0505554e4b45ca459/iowa-counties.geojson') as response:
@@ -314,7 +313,7 @@ layout = html.Div([
             ], className='p-2 align-items-stretch'),
         ])
 
-@app.callback([Output('top10_1', 'figure'),
+@callback([Output('top10_1', 'figure'),
                Output('top10_2', 'figure'),
                Output('top10_3', 'figure'),
                Output('top10_4', 'figure'),
@@ -332,56 +331,67 @@ def update_graph(n_clicks,start_date,end_date):
                          index=['category_name'],
                          aggfunc=np.sum).reset_index()
 
-    df5 = df5.sort_values(['sale_dollars'], ascending=[True]).head(10)
+    df5 = df5.sort_values(['sale_dollars'], ascending=[False]).head(10)
+    df5 = df5.sort_values(['sale_dollars'], ascending=[True])
     top10_1_title_1 = df5['category_name'].iloc[9]
     top10_1_title_2 = df5['sale_dollars'].iloc[9]
     top10_1_title_2 = f'{top10_1_title_2:,.2f}'
+    top10_1_title_3 = df5['sale_dollars'].iloc[9]
 
     fig_3 = px.bar(df5, x='sale_dollars', y='category_name', orientation='h', text='sale_dollars')
     fig_3.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_3.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_3.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_3.update_layout({'xaxis': {'range': [0, top10_1_title_3 * 1.3]}})
 
     df6 = dff.pivot_table(values='bottles_sold',
                               index=['category_name'],
                               aggfunc=np.sum).reset_index()
 
-    df6 = df6.sort_values(['bottles_sold'],ascending=[True]).head(10)
+    df6 = df6.sort_values(['bottles_sold'], ascending=[False]).head(10)
+    df6 = df6.sort_values(['bottles_sold'], ascending=[True])
     top10_2_title_1 = df6['category_name'].iloc[9]
     top10_2_title_2 = df6['bottles_sold'].iloc[9]
     top10_2_title_2 = f'{top10_2_title_2:,.2f}'
+    top10_2_title_3 = df6['bottles_sold'].iloc[9]
 
     fig_4 = px.bar(df6, x='bottles_sold', y='category_name', orientation='h', text='bottles_sold')
     fig_4.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_4.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_4.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_4.update_layout({'xaxis': {'range': [0, top10_2_title_3 * 1.3]}})
 
     df7 = dff.pivot_table(values='volume_sold_liters',
                          index=['category_name'],
                          aggfunc=np.sum).reset_index()
 
-    df7 = df7.sort_values(['volume_sold_liters'], ascending=[True]).head(10)
+    df7 = df7.sort_values(['volume_sold_liters'], ascending=[False]).head(10)
+    df7 = df7.sort_values(['volume_sold_liters'], ascending=[True])
     top10_3_title_1 = df7['category_name'].iloc[9]
     top10_3_title_2 = df7['volume_sold_liters'].iloc[9]
     top10_3_title_2 = f'{top10_3_title_2:,.2f}'
+    top10_3_title_3 = df7['volume_sold_liters'].iloc[9]
 
     fig_5 = px.bar(df7, x='volume_sold_liters', y='category_name', orientation='h', text='volume_sold_liters')
     fig_5.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_5.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_5.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_5.update_layout({'xaxis': {'range': [0, top10_3_title_3 * 1.3]}})
 
     df8 = dff.pivot_table(values='revenues',
                               index=['category_name'],
                               aggfunc=np.sum).reset_index()
-    df8 = df8.sort_values(['revenues'],ascending=[True]).head(10)
+    df8 = df8.sort_values(['revenues'], ascending=[False]).head(10)
+    df8 = df8.sort_values(['revenues'], ascending=[True])
     top10_4_title_1 = df8['category_name'].iloc[9]
     top10_4_title_2 = df8['revenues'].iloc[9]
     top10_4_title_2 = f'{top10_4_title_2:,.2f}'
-
+    top10_4_title_3 = df8['revenues'].iloc[9]
     fig_6 = px.bar(df8, x='revenues', y='category_name', orientation='h', text='revenues')
     fig_6.update_traces(marker_color='rgba(50, 171, 96, 0.6)', marker_line_color='rgba(50, 171, 96, 1.0)',
-                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='inside')
-    fig_6.update_layout(template='plotly_white', margin=dict(l=20, r=20, t=20, b=20))
+                      marker_line_width=1,texttemplate='%{text:,.2f}', textposition='outside')
+    fig_6.update_layout(template='plotly_white', margin=dict(l=0, r=0, t=0, b=0))
+    fig_6.update_layout({'xaxis':{'range':[0, top10_4_title_3*1.3]}})
     return fig_3,\
            fig_4,\
            fig_5,\
@@ -391,7 +401,7 @@ def update_graph(n_clicks,start_date,end_date):
            html.Span(f'The most sold wines category by liters from {start_date} to {end_date} is {top10_3_title_1} with amount {top10_3_title_2}'),\
            html.Span(f'The most sold wines category by revenues from {start_date} to {end_date} is {top10_4_title_1} with amount {top10_4_title_2}')
 
-@app.callback([Output('map_1', 'figure'),
+@callback([Output('map_1', 'figure'),
                Output('map_2', 'figure'),
                Output('map_1_title', 'children'),
                Output('map_2_title', 'children')],
@@ -447,7 +457,7 @@ def update_graph(n_clicks,start_date,end_date):
            html.Span(f'The most sold wines county by sales amount from {start_date} to {end_date} is {map_1_title_1} with amount {map_1_title_2}'),\
            html.Span(f'The most sold wines county by liters from {start_date} to {end_date} is {map_2_title_1} with amount {map_2_title_2}'),
 
-@app.callback(Output('category','options'),
+@callback(Output('category','options'),
               [Input('my-date-picker-range_2','start_date'),
                Input('my-date-picker-range_2','end_date')])
 
@@ -455,7 +465,7 @@ def update_options(start_date_2,end_date_2):
     dff_2 = df[(df['date'] >= start_date_2) & (df['date'] <= end_date_2)]
     return [{'label':x,'value':x} for x in dff_2.sort_values('category_name')['category_name'].unique()]
 
-@app.callback(Output('time_series_1','figure'),
+@callback(Output('time_series_1','figure'),
               [Input('btn_2','n_clicks')],
               [State('category','value'),
                State('my-date-picker-range_2','start_date'),
